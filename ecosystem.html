@@ -1,18 +1,457 @@
-<section>
-    <h2 class="gold-text">Integrated Modules</h2>
-    <div class="space-y-12">
-        <!-- LegacyUnlocked -->
-        <div class="border border-gold-500 p-6 rounded-lg">
-            <h3 class="text-2xl gold-text">LegacyUnlocked.io</h3>
-            <p>Founder's earning mechanism featuring NFT sales and AI product monetization.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecosystem - Piogoldcoin ($PGC)</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #000000;
+            --gold: #FFD700;
+            --dark-gold: #B8860B;
+            --bg-dark: #121212;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+        }
+        .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(to right, var(--gold), var(--dark-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .gold-border {
+            border-color: var(--gold);
+        }
+        .gold-bg {
+            background-color: var(--gold);
+        }
+        .hover-gold:hover {
+            color: var(--gold);
+        }
+        .nav-gradient {
+            background: linear-gradient(90deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation (Same as homepage) -->
+    <nav class="nav-gradient py-4 px-6 border-b gold-border sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path>
+                </svg>
+                <span class="text-2xl font-bold gold-gradient-text font-cinzel">PIOGOLDCOIN</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="about.html" class="hover-gold transition">About</a>
+                <a href="tokenomics.html" class="hover-gold transition">Tokenomics</a>
+                <a href="ecosystem.html" class="hover-gold transition font-bold">Ecosystem</a>
+                <a href="gold.html" class="hover-gold transition">Gold</a>
+                <a href="charity.html" class="hover-gold transition">Charity</a>
+                <button id="connectWallet" class="px-4 py-2 rounded-full border gold-border hover:bg-opacity-10 hover:bg-gold transition">
+                    Connect Wallet
+                </button>
+            </div>
+            <button id="mobileMenuButton" class="md:hidden text-gold">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
         </div>
-        
-        <!-- Econoverse -->
-        <div class="border border-gold-500 p-6 rounded-lg">
-            <h3 class="text-2xl gold-text">Econoverse.io</h3>
-            <p>Educational game "MineTheMultiverse" where earnings can be donated, saved, or staked.</p>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden hidden bg-gray-900 py-4 px-6 absolute left-0 right-0 top-16 shadow-lg">
+            <div class="flex flex-col space-y-4">
+                <a href="about.html" class="hover-gold">About</a>
+                <a href="tokenomics.html" class="hover-gold">Tokenomics</a>
+                <a href="ecosystem.html" class="hover-gold font-bold">Ecosystem</a>
+                <a href="gold.html" class="hover-gold">Gold</a>
+                <a href="charity.html" class="hover-gold">Charity</a>
+                <button id="connectWalletMobile" class="w-full py-2 border gold-border rounded-full hover:bg-opacity-10 hover:bg-gold">
+                    Connect Wallet
+                </button>
+            </div>
         </div>
-        
-        <!-- Other modules -->
-    </div>
-</section>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-24 px-6 text-center bg-gradient-to-b from-black to-gray-900">
+        <div class="container mx-auto max-w-5xl">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 gold-gradient-text font-cinzel leading-tight">
+                Piogoldcoin Ecosystem
+            </h1>
+            <p class="text-xl mb-10 max-w-3xl mx-auto opacity-90">
+                Interconnected platforms creating a comprehensive digital economy
+            </p>
+        </div>
+    </section>
+
+    <!-- Ecosystem Overview -->
+    <section class="py-20 px-6">
+        <div class="container mx-auto max-w-5xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4 gold-gradient-text font-cinzel">Integrated Modules</h2>
+                <p class="text-xl max-w-3xl mx-auto opacity-90">
+                    Each component works synergistically to create value for $PGC holders
+                </p>
+            </div>
+            
+            <div class="space-y-16">
+                <!-- LegacyUnlocked -->
+                <div id="legacyunlocked" class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 md:order-1">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold gold-gradient-text">LegacyUnlocked.io</h3>
+                        </div>
+                        <p class="mb-6 opacity-90">
+                            Founder's earning mechanism featuring NFT sales, AI product monetization, and affiliate payouts. 
+                            The $1,000 Legacy Pass NFT grants exclusive access to premium content and revenue streams.
+                        </p>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>NFT sales with recurring revenue shares</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>AI-powered digital product marketplace</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Multi-level affiliate compensation</span>
+                            </li>
+                        </ul>
+                        <a href="#" class="inline-flex items-center px-6 py-3 border gold-border rounded-full hover:bg-opacity-10 hover:bg-gold transition">
+                            Visit LegacyUnlocked
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="order-1 md:order-2">
+                        <div class="border gold-border rounded-xl overflow-hidden">
+                            <img src="https://via.placeholder.com/600x400" alt="LegacyUnlocked" class="w-full h-auto">
+                            <div class="p-6 bg-gray-800">
+                                <h4 class="font-bold mb-2">Legacy Pass NFT</h4>
+                                <p class="opacity-90 text-sm">Premium access token for LegacyUnlocked ecosystem</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Econoverse -->
+                <div id="econoverse" class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="border gold-border rounded-xl overflow-hidden">
+                            <img src="https://via.placeholder.com/600x400" alt="Econoverse" class="w-full h-auto">
+                            <div class="p-6 bg-gray-800">
+                                <h4 class="font-bold mb-2">MineTheMultiverse Game</h4>
+                                <p class="opacity-90 text-sm">Educational blockchain game</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold gold-gradient-text">Econoverse.io</h3>
+                        </div>
+                        <p class="mb-6 opacity-90">
+                            Educational and social-justice oriented game environment where users can earn $PGC through gameplay,
+                            then choose to donate, save, or stake their earnings.
+                        </p>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>"MineTheMultiverse" educational game</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Earnings can be donated, saved, or staked</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Social justice learning modules</span>
+                            </li>
+                        </ul>
+                        <a href="#" class="inline-flex items-center px-6 py-3 border gold-border rounded-full hover:bg-opacity-10 hover:bg-gold transition">
+                            Enter Econoverse
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Cancer Charity Foundation -->
+                <div id="ccf" class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 md:order-1">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold gold-gradient-text">Cancer Charity Foundation</h3>
+                        </div>
+                        <p class="mb-6 opacity-90">
+                            Transparent donation platform where contributors receive NFT recognition and can track the real-world impact
+                            of their donations through blockchain-verified records.
+                        </p>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>NFT Scroll: "Blessings to the Benefactor"</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>NFT Badge: "Enforcer of the Law of Charity"</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Partnered with ISBET for education initiatives</span>
+                            </li>
+                        </ul>
+                        <a href="charity.html" class="inline-flex items-center px-6 py-3 border gold-border rounded-full hover:bg-opacity-10 hover:bg-gold transition">
+                            Donate Now
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="order-1 md:order-2">
+                        <div class="border gold-border rounded-xl overflow-hidden">
+                            <img src="https://via.placeholder.com/600x400" alt="Cancer Charity" class="w-full h-auto">
+                            <div class="p-6 bg-gray-800">
+                                <h4 class="font-bold mb-2">Benefactor NFT</h4>
+                                <p class="opacity-90 text-sm">Digital recognition for charitable contributions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- The Haven Chain -->
+                <div id="havenchain" class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="border gold-border rounded-xl overflow-hidden">
+                            <img src="https://via.placeholder.com/600x400" alt="Haven Chain" class="w-full h-auto">
+                            <div class="p-6 bg-gray-800">
+                                <h4 class="font-bold mb-2">Ally of the Haven Badge</h4>
+                                <p class="opacity-90 text-sm">Recognition for rehabilitation supporters</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold gold-gradient-text">The Haven Chain</h3>
+                        </div>
+                        <p class="mb-6 opacity-90">
+                            Privacy-focused rehabilitation hub providing anonymous support channels and recognizing all contributors equally
+                            through the "Ally of the Haven" badge NFT.
+                        </p>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Privacy-focused support system</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>No hierarchy - all partners recognized equally</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Anonymous contribution options</span>
+                            </li>
+                        </ul>
+                        <a href="#" class="inline-flex items-center px-6 py-3 border gold-border rounded-full hover:bg-opacity-10 hover:bg-gold transition">
+                            Learn About Haven
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Swap Engine -->
+                <div id="swapengine" class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 md:order-1">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold gold-gradient-text">Swap.Piogoldcoin.com</h3>
+                        </div>
+                        <p class="mb-6 opacity-90">
+                            Internal smart-contract-powered swap engine supporting $PGC conversions, peer payments, and direct charity donations
+                            with minimized fees and maximum transparency.
+                        </p>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>$PGC ↔ USDT conversions</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Peer-to-peer payments</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Direct charity donation portal</span>
+                            </li>
+                        </ul>
+                        <a href="#" class="inline-flex items-center px-6 py-3 border gold-border rounded-full hover:bg-opacity-10 hover:bg-gold transition">
+                            Access Swap Engine
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="order-1 md:order-2">
+                        <div class="border gold-border rounded-xl overflow-hidden">
+                            <img src="https://via.placeholder.com/600x400" alt="Swap Engine" class="w-full h-auto">
+                            <div class="p-6 bg-gray-800">
+                                <h4 class="font-bold mb-2">Piogoldcoin Swap Interface</h4>
+                                <p class="opacity-90 text-sm">Internal token exchange platform</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ecosystem Map -->
+    <section class="py-20 px-6 bg-gray-900">
+        <div class="container mx-auto max-w-5xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4 gold-gradient-text font-cinzel">Ecosystem Map</h2>
+                <p class="text-xl max-w-3xl mx-auto opacity-90">
+                    How all components interact within the Piogoldcoin digital economy
+                </p>
+            </div>
+            
+            <div class="border gold-border rounded-xl p-8 bg-gray-800">
+                <img src="https://via.placeholder.com/1200x600" alt="Ecosystem Map" class="w-full h-auto rounded-lg">
+                <div class="mt-8 grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 gold-gradient-text">Value Flow</h3>
+                        <p class="opacity-90">
+                            $PGC tokens circulate through all ecosystem components, creating a closed-loop economy where value is continuously
+                            generated and redistributed to participants.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 gold-gradient-text">Interconnectivity</h3>
+                        <p class="opacity-90">
+                            Each module is designed to complement the others, with seamless token transfers and shared governance mechanisms
+                            ensuring cohesive operation across the entire ecosystem.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Same as homepage) -->
+    <footer class="border-t gold-border pt-12 pb-8 px-6">
+        <div class="container mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path>
+                        </svg>
+                        <span class="text-xl font-bold gold-gradient-text font-cinzel">PIOGOLDCOIN</span>
+                    </div>
+                    <p class="opacity-80">Blockchain-powered, justice-rooted, asset-backed digital economy.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 gold-gradient-text">Navigation</h4>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="opacity-80 hover:opacity-100 hover-gold transition">About</a></li>
+                        <li><a href="tokenomics.html" class="opacity-80 hover:opacity-100 hover-gold transition">Tokenomics</a></li>
+                        <li><a href="ecosystem.html" class="opacity-80 hover:opacity-100 hover-gold transition">Ecosystem</a></li>
+                        <li><a href="gold.html" class="opacity-80 hover:opacity-100 hover-gold transition">Gold Redemption</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 gold-gradient-text">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Whitepaper</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Audit Reports</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">GitHub</a></li>
+                        <li><a href="roadmap.html" class="opacity-80 hover:opacity-100 hover-gold transition">Roadmap</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 gold-gradient-text">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full border gold-border flex items-center justify-center hover:bg-gold hover:border-black hover:text-black transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border gold-border flex items-center justify-center hover:bg-gold hover:border-black hover:text-black transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border gold-border flex items-center justify-center hover:bg-gold hover:border-black hover:text-black transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-
