@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invest in Piogoldcoin ($PGC) | Asset-Backed Digital Gold</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@2.0.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
+    <style>
+        :root {
+            --primary: #000000;
+            --gold: #FFD700;
+            --dark-gold: #B8860B;
+            --bg-dark: #121212;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+        }
+        .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(to right, var(--gold), var(--dark-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .gold-border {
+            border-color: var(--gold);
+        }
+        .gold-bg {
+            background-color: var(--gold);
+        }
+        .hover-gold:hover {
+            color: var(--gold);
+        }
+        .nav-gradient {
+            background: linear-gradient(90deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+        .investment-card {
+            transition: all 0.3s ease;
+            border-width: 1px;
+        }
+        .investment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.1);
+        }
+        .tier-1 {
+            border-color: #B8860B;
+        }
+        .tier-2 {
+            border-color: #C0C0C0;
+        }
+        .tier-3 {
+            border-color: #CD7F32;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-gradient py-4 px-6 border-b gold-border sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path>
+                </svg>
+                <span class="text-2xl font-bold gold-gradient-text font-cinzel">PIOGOLD INVEST</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#charts" class="hover-gold transition">Charts</a>
+                <a href="#strategies" class="hover-gold transition">Strategies</a>
+                <a href="#tiers" class="hover-gold transition">Investment Tiers</a>
+                <a href="#gold" class="hover-gold transition">Gold Backing</a>
+                <div id="price-container" class="flex items-center ml-4 px-3 py-1 rounded-full bg-gray-800">
+                    <span class="font-bold">$PGC:</span>
+                    <span id="current-price">Loading...</span>
+                    <span id="price-change" class="ml-2"></span>
+                </div>
+                <button id="connectWallet" class="px-4 py-2 rounded-full border gold-border hover:bg-opacity-10 hover:bg-gold transition">
+                    Connect Wallet
+                </button>
+            </div>
+            <button id="mobileMenuButton" class="md:hidden text-gold">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden hidden bg-gray-900 py-4 px-6 absolute left-0 right-0 top-16 shadow-lg">
+            <div class="flex flex-col space-y-4">
+                <a href="#charts" class="hover-gold">Charts</a>
+                <a href="#strategies" class="hover-gold">Strategies</a>
+                <a href="#tiers" class="hover-gold">Investment Tiers</a>
+                <a href="#gold" class="hover-gold">Gold Backing</a>
+                <div id="price-container-mobile" class="pt-2">
+                    <span class="font-bold">$PGC:</span>
+                    <span id="current-price-mobile">Loading...</span>
+                    <span id="price-change-mobile" class="ml-2"></span>
+                </div>
+                <button id="connectWalletMobile" class="w-full py-2 border gold-border rounded-full hover:bg-opacity-10 hover:bg-gold">
+                    Connect Wallet
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-24 px-6 text-center bg-gradient-to-b from-black to-gray-900">
+        <div class="container mx-auto max-w-5xl">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 gold-gradient-text font-cinzel leading-tight">
+                Invest in Digital Gold
+            </h1>
+            <p class="text-xl mb-10 max-w-3xl mx-auto opacity-90">
+                $PGC combines blockchain technology with physical gold backing to create a stable yet appreciating digital asset
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#tiers" class="px-8 py-3 rounded-full bg-gold text-black font-bold hover:bg-opacity-90 transition">
+                    Invest Now
+                </a>
+                <a href="#strategies" class="px-8 py-3 rounded-full border gold-border hover:bg-opacity-10 hover:bg-gold transition">
+                    Learn Strategies
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="py-6 px-6 bg-gray-800 border-y gold-border">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="p-4">
+                    <div class="text-2xl font-bold gold-gradient-text" id="market-cap">$--.--</div>
+                    <div class="text-sm opacity-80">Market Cap</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-2xl font-bold gold-gradient-text" id="circulating-supply">--.--</div>
+                    <div class="text-sm opacity-80">Circulating Supply</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-2xl font-bold gold-gradient-text" id="gold-reserves">--.-- kg</div>
+                    <div class="text-sm opacity-80">Gold Reserves</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-2xl font-bold gold-gradient-text" id="apy">--%</div>
+                    <div class="text-sm opacity-80">Staking APY</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Price Charts Section -->
+    <section id="charts" class="py-20 px-6">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4 gold-gradient-text font-cinzel">Live Price Charts</h2>
+                <p class="text-xl max-w-3xl mx-auto opacity-90">
+                    Track $PGC performance across different time periods
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <div class="border gold-border rounded-xl p-6 bg-gray-800">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">$PGC/USDT</h3>
+                        <div class="flex space-x-2">
+                            <button class="timeframe-btn px-3 py-1 rounded border gold-border bg-gray-900" data-time="24h">24H</button>
+                            <button class="timeframe-btn px-3 py-1 rounded border gold-border" data-time="7d">7D</button>
+                            <button class="timeframe-btn px-3 py-1 rounded border gold-border" data-time="30d">30D</button>
+                            <button class="timeframe-btn px-3 py-1 rounded border gold-border" data-time="90d">90D</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="priceChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="border gold-border rounded-xl p-6 bg-gray-800">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">$PGC/Gold</h3>
+                        <div class="flex space-x-2">
+                            <button class="goldtime-btn px-3 py-1 rounded border gold-border bg-gray-900" data-time="24h">24H</button>
+                            <button class="goldtime-btn px-3 py-1 rounded border gold-border" data-time="7d">7D</button>
+                            <button class="goldtime-btn px-3 py-1 rounded border gold-border" data-time="30d">30D</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="goldChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border gold-border rounded-xl p-6 bg-gray-800">
+                <h3 class="text-xl font-bold mb-4">Technical Indicators</h3>
+                <div class="chart-container">
+                    <canvas id="technicalChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Strategies -->
+    <section id="strategies" class="py-20 px-6 bg-gray-900">
+        <div class="container mx-auto max-w-5xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4 gold-gradient-text font-cinzel">Investment Strategies</h2>
+                <p class="text-xl max-w-3xl mx-auto opacity-90">
+                    Proven approaches to building wealth with $PGC
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="investment-card border gold-border rounded-xl p-6 bg-gray-800">
+                    <div class="w-14 h-14 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Dollar-Cost Averaging</h3>
+                    <p class="mb-4 opacity-90 text-sm">
+                        Invest fixed amounts at regular intervals to reduce market timing risk
+                    </p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Best for long-term investors</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Reduces emotional trading</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Automate with our scheduled buys</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="investment-card border gold-border rounded-xl p-6 bg-gray-800">
+                    <div class="w-14 h-14 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Staking & Yield</h3>
+                    <p class="mb-4 opacity-90 text-sm">
+                        Earn passive income by staking your $PGC tokens in our vault
+                    </p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Current APY: <span id="current-apy" class="font-bold">12.5%</span></span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Compounded daily</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Withdraw anytime</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="investment-card border gold-border rounded-xl p-6 bg-gray-800">
+                    <div class="w-14 h-14 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Gold-Backed Accumulation</h3>
+                    <p class="mb-4 opacity-90 text-sm">
+                        Build positions when gold prices dip for maximum asset backing
+                    </p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Track gold/$PGC correlation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Receive gold price alerts</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Redeem for physical gold</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-16 border gold-border rounded-xl p-8 bg-gray-800">
+                <h3 class="text-xl font-bold mb-4 gold-gradient-text">Step-by-Step Investment Guide</h3>
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="text-center p-4">
+                        <div class="w-12 h-12 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mx-auto mb-3 text-gold font-bold text-xl">1</div>
+                        <h4 class="font-bold mb-2">Create Wallet</h4>
+                        <p class="text-sm opacity-90">Download MetaMask or Trust Wallet</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-12 h-12 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mx-auto mb-3 text-gold font-bold text-xl">2</div>
+                        <h4 class="font-bold mb-2">Fund with MATIC</h4>
+                        <p class="text-sm opacity-90">Buy MATIC on exchange and send to wallet</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-12 h-12 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mx-auto mb-3 text-gold font-bold text-xl">3</div>
+                        <h4 class="font-bold mb-2">Swap for $PGC</h4>
+                        <p class="text-sm opacity-90">Use our swap portal or DEXs</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-12 h-12 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mx-auto mb-3 text-gold font-bold text-xl">4</div>
+                        <h4 class="font-bold mb-2">Stake & Earn</h4>
+                        <p class="text-sm opacity-90">Stake in vault or hold long-term</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Tiers -->
+    <section id="tiers" class="py-20 px-6">
+        <div class="container mx-auto max-w-5xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4 gold-gradient-text font-cinzel">Investment Tiers</h2>
+                <p class="text-xl max-w-3xl mx-auto opacity-90">
+                    Exclusive benefits based on your $PGC holdings
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="investment-card tier-3 rounded-xl p-6 bg-gray-800 text-center">
+                    <h3 class="text-xl font-bold mb-2">Bronze Tier</h3>
+                    <p class="text-sm opacity-90 mb-4">1,000 - 4,999 $PGC</p>
+                    <div class="text-3xl font-bold gold-gradient-text mb-6">5% APY Boost</div>
+                    <ul class="space-y-3 mb-8 text-left">
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Basic staking rewards</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Monthly market reports</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Priority email support</span>
+                        </li>
+                    </ul>
+                    <button class="w-full py-3 rounded-full border gold-border hover:bg-opacity-10 hover:bg-gold transition">
+                        Start Investing
+                    </button>
+                </div>
+                
+                <div class="investment-card tier-2 rounded-xl p-6 bg-gray-800 text-center transform scale-105 z-10">
+                    <div class="absolute top-0 right-0 bg-gray-700 text-xs font-bold px-3 py-1 rounded-bl rounded-tr gold-border">POPULAR</div>
+                    <h3 class="text-xl font-bold mb-2">Silver Tier</h3>
+                    <p class="text-sm opacity-90 mb-4">5,000 - 19,999 $PGC</p>
+                    <div class="text-3xl font-bold gold-gradient-text mb-6">15% APY Boost</div>
+                    <ul class="space-y-3 mb-8 text-left">
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Enhanced staking rewards</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Weekly market insights</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Exclusive webinars</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Priority redemption</span>
+                        </li>
+                    </ul>
+                    <button class="w-full py-3 rounded-full bg-gold text-black font-bold hover:bg-opacity-90 transition">
+                        Upgrade Tier
+                    </button>
+                </div>
+                
+                <div class="investment-card tier-1 rounded-xl p-6 bg-gray-800 text-center">
+                    <h3 class="text-xl font-bold mb-2">Gold Tier</h3>
+                    <p class="text-sm opacity-90 mb-4">20,000+ $PGC</p>
+                    <div class="text-3xl font-bold gold-gradient-text mb-6">25% APY Boost</div>
+                    <ul class="space-y-3 mb-8 text-left">
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Maximum staking rewards</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Daily market analysis</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>1-on-1 consultations</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>VIP event access</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Physical gold certificate</span>
+                        </li>
+                    </ul>
+                    <button class="w-full py-3 rounded-full border gold-border hover:bg-opacity-10 hover:bg-gold transition">
+                        Become VIP
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gold Backing Section -->
+    <section id="gold" class="py-20 px-6 bg-gray-900">
+        <div class="container mx-auto max-w-5xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4 gold-gradient-text font-cinzel">Gold-Backed Security</h2>
+                <p class="text-xl max-w-3xl mx-auto opacity-90">
+                    Every $PGC token is backed by verifiable physical gold reserves
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 gold-gradient-text">Tiira Gold Mine Reserves</h3>
+                    <p class="mb-6 opacity-90">
+                        Our partnership with Tiira Gold Mine in Uganda ensures that a portion of all gold production
+                        is allocated to back $PGC tokens. This physical gold is stored in secure vaults with regular audits.
+                    </p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Monthly reserve audits published on-chain</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Redeemable for physical gold bars (10g increments)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>NFT certificates for all redemptions</span>
+                        </li>
+                    </ul>
+                    <a href="gold.html" class="inline-flex items-center px-6 py-3 border gold-border rounded-full hover:bg-opacity-10 hover:bg-gold transition">
+                        Learn About Redemption
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </a>
+                </div>
+                <div>
+                    <div class="border gold-border rounded-xl overflow-hidden">
+                        <img src="https://via.placeholder.com/600x400" alt="Gold Reserves" class="w-full h-auto">
+                        <div class="p-6 bg-gray-800">
+                            <h4 class="font-bold mb-2">Gold Reserve Certificate</h4>
+                            <p class="opacity-90 text-sm">View current reserve status on blockchain</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 px-6 text-center bg-gradient-to-b from-black to-gray-900 border-t gold-border">
+        <div class="container mx-auto max-w-3xl">
+            <h2 class="text-4xl font-bold mb-6 gold-gradient-text font-cinzel leading-tight">
+                Ready to Invest in Digital Gold?
+            </h2>
+            <p class="text-xl mb-10 opacity-90">
+                Join thousands of investors securing their wealth with gold-backed cryptocurrency
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#tiers" class="px-8 py-4 rounded-full bg-gold text-black font-bold hover:bg-opacity-90 transition text-lg">
+                    Start Investing Now
+                </a>
+                <a href="gold.html" class="px-8 py-4 rounded-full border gold-border hover:bg-opacity-10 hover:bg-gold transition text-lg">
+                    Learn About Gold Backing
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t gold-border pt-12 pb-8 px-6">
+        <div class="container mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path>
+                        </svg>
+                        <span class="text-xl font-bold gold-gradient-text font-cinzel">PIOGOLDCOIN</span>
+                    </div>
+                    <p class="opacity-80">Blockchain-powered, gold-backed digital economy.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 gold-gradient-text">Invest</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#charts" class="opacity-80 hover:opacity-100 hover-gold transition">Price Charts</a></li>
+                        <li><a href="#strategies" class="opacity-80 hover:opacity-100 hover-gold transition">Strategies</a></li>
+                        <li><a href="#tiers" class="opacity-80 hover:opacity-100 hover-gold transition">Investment Tiers</a></li>
+                        <li><a href="#gold" class="opacity-80 hover:opacity-100 hover-gold transition">Gold Backing</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 gold-gradient-text">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Whitepaper</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Audit Reports</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Gold Certificates</a></li>
+                        <li><a href="roadmap.html" class="opacity-80 hover:opacity-100 hover-gold transition">Roadmap</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 gold-gradient-text">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full border gold-border flex items-center justify-center hover:bg-gold hover:border-black hover:text-black transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border gold-border flex items-center justify-center hover:bg-gold hover:border-black hover:text-black transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border gold-border flex items-center justify-center hover:bg-gold hover:border-black hover:text-black transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border gold-border flex items-center justify-center hover:bg-gold hover:border-black hover:text-black transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0C8.688 0 6 2.688 6 6s2.688 6 6 6c1.066 0 2.1171.2862 3.0371.8262 2.858 1.678 3.8167 5.3539 2.1387 8.2129h1.7266c1.687-2.878 1.476-6.5061-.687-9.0931C17.598 7.615 18 6.841 18 6c0-3.312-2.688-6-6-6zm0 2c2.206 0 4 1.794 4 4s-1.794 4-4 4-4-1.794-4-4 1.794-4 4-4zm-4.9336 12.25c-.53 0-.9316.4316-.9316.9666v1.9668c0 .535.4016.9666.9316.9666h9.8672c.53 0 .9316-.4316.9316-.9666v-1.9668c0-.535-.4016-.9666-.9316-.9666z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center opacity-70 text-sm">
+                <p>© 2025 Piogoldcoin. All rights reserved.</p>
+                <p class="mt-2">Investments involve risk. Past performance is not indicative of future results.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/wallet.js"></script>
+    <script>
+        // Chart.js Configuration
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize wallet
+            await initWallet();
+            
+            // Load price data
+            await fetchPriceData();
+            
+            // Initialize charts
+            initCharts();
+            
+            // Setup chart time period buttons
+            document.querySelectorAll('.timeframe-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.timeframe-btn').forEach(b => 
+                        b.classList.remove('bg-gray-900'));
+                    this.classList.add('bg-gray-900');
+                    updateChartTimeframe(this.dataset.time);
+                });
+            });
+            
+            document.querySelectorAll('.goldtime-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.goldtime-btn').forEach(b => 
+                        b.classList.remove('bg-gray-900'));
+                    this.classList.add('bg-gray-900');
+                    updateGoldChartTimeframe(this.dataset.time);
+                });
+            });
+        });
+
+        // Chart instances
+        let priceChart, goldChart, technicalChart;
+
+        function initCharts() {
+            // Main Price Chart
+            const priceCtx = document.getElementById('priceChart').getContext('2d');
+            priceChart = new Chart(priceCtx, {
+                type: 'line',
+                data: {
+                    labels: Array(24).fill().map((_, i) => `${i}:00`),
+                    datasets: [{
+                        label: '$PGC Price',
+                        data: Array(24).fill().map(() => Math.random() * 10 + 15),
+                        borderColor: '#FFD700',
+                        backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: getChartOptions('Price (USDT)')
+            });
+
+            // Gold Correlation Chart
+            const goldCtx = document.getElementById('goldChart').getContext('2d');
+            goldChart = new Chart(goldCtx, {
+                type: 'line',
+                data: {
+                    labels: Array(24).fill().map((_, i) => `${i}:00`),
+                    datasets: [
+                        {
+                            label: '$PGC Price',
+                            data: Array(24).fill().map(() => Math.random() * 10 + 15),
+                            borderColor: '#FFD700',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Gold Price',
+                            data: Array(24).fill().map(() => Math.random() * 5 + 60),
+                            borderColor: '#B8860B',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: getChartOptions('Price', true)
+            });
+
+            // Technical Indicators Chart
+            const techCtx = document.getElementById('technicalChart').getContext('2d');
+            technicalChart = new Chart(techCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['RSI', 'MACD', 'Bollinger', 'Volume', 'Support', 'Resistance'],
+                    datasets: [{
+                        label: 'Technical Strength',
+                        data: [65, 59, 80, 81, 56, 72],
+                        backgroundColor: 'rgba(255, 215, 0, 0.7)',
+                        borderColor: '#FFD700',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function getChartOptions(title, dualAxis = false) {
+            return {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#FFF'
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    title: {
+                        display: false,
+                        text: title
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.7)'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.7)'
+                        },
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: dualAxis ? '$PGC Price' : title,
+                            color: '#FFD700'
+                        }
+                    },
+                    ...(dualAxis ? {
+                        y1: {
+                            grid: {
+                                drawOnChartArea: false
+                            },
+                            ticks: {
+                                color: '#B8860B'
+                            },
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Gold Price (USD/oz)',
+                                color: '#B8860B'
+                            }
+                        }
+                    } : {})
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
+                }
+            };
+        }
+
+        async function fetchPriceData() {
+            try {
+                // In production, replace with actual API calls
+                simulateMarketData();
+                
+                // Update stats
+                document.getElementById('market-cap').textContent = '$4,827,450';
+                document.getElementById('circulating-supply').textContent = '32.5M';
+                document.getElementById('gold-reserves').textContent = '185 kg';
+                document.getElementById('apy').textContent = '12.5%';
+                
+            } catch (error) {
+                console.error("Error fetching market data:", error);
+            }
+        }
+
+        function simulateMarketData() {
+            // Simulate changing price data
+            setInterval(() => {
+                // Update main chart
+                const newData = priceChart.data.datasets[0].data.map(value => 
+                    Math.max(10, value + (Math.random() - 0.5))
+                );
+                priceChart.data.datasets[0].data = newData;
+                priceChart.update();
+                
+                // Update gold chart
+                const newPgcData = goldChart.data.datasets[0].data.map(value => 
+                    Math.max(10, value + (Math.random() - 0.5))
+                );
+                const newGoldData = goldChart.data.datasets[1].data.map(value => 
+                    Math.max(50, value + (Math.random() - 0.3))
+                );
+                goldChart.data.datasets[0].data = newPgcData;
+                goldChart.data.datasets[1].data = newGoldData;
+                goldChart.update();
+                
+                // Update technical indicators
+                const newTechData = technicalChart.data.datasets[0].data.map(value => 
+                    Math.max(0, Math.min(100, value + (Math.random() * 10 - 5)))
+                );
+                technicalChart.data.datasets[0].data = newTechData;
+                technicalChart.update();
+                
+            }, 3000);
+        }
+
+        function updateChartTimeframe(timeframe) {
+            // In production, fetch new data based on timeframe
+            const dataPoints = 
+                timeframe === '24h' ? 24 :
+                timeframe === '7d' ? 7 :
+                timeframe === '30d' ? 30 : 90;
+                
+            const labels = 
+                timeframe === '24h' ? Array(24).fill().map((_, i) => `${i}:00`) :
+                timeframe === '7d' ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] :
+                Array(dataPoints).fill().map((_, i) => `Day ${i+1}`);
+                
+            const newData = Array(dataPoints).fill().map(() => 
+                Math.random() * 10 + (timeframe === '90d' ? 10 : 15)
+            );
+            
+            priceChart.data.labels = labels;
+            priceChart.data.datasets[0].data = newData;
+            priceChart.update();
+        }
+
+        function updateGoldChartTimeframe(timeframe) {
+            // Similar to above but for gold chart
+            const dataPoints = 
+                timeframe === '24h' ? 24 :
+                timeframe === '7d' ? 7 : 30;
+                
+            const labels = 
+                timeframe === '24h' ? Array(24).fill().map((_, i) => `${i}:00`) :
+                timeframe === '7d' ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] :
+                Array(dataPoints).fill().map((_, i) => `Day ${i+1}`);
+                
+            const newPgcData = Array(dataPoints).fill().map(() => 
+                Math.random() * 10 + (timeframe === '30d' ? 10 : 15)
+            );
+            
+            const newGoldData = Array(dataPoints).fill().map(() => 
+                Math.random() * 5 + (timeframe === '30d' ? 55 : 60)
+            );
+            
+            goldChart.data.labels = labels;
+            goldChart.data.datasets[0].data = newPgcData;
+            goldChart.data.datasets[1].data = newGoldData;
+            goldChart.update();
+        }
+
+        // Handle investment tier clicks
+        document.querySelectorAll('.investment-card button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (!userAddress) {
+                    alert('Please connect your wallet first');
+                    document.getElementById('connectWallet').click();
+                    return;
+                }
+                
+                const tier = this.closest('.investment-card').querySelector('h3').textContent;
+                alert(`Redirecting to ${tier} investment portal...`);
+                // In production, would connect to smart contract
+            });
+        });
+    </script>
+</body>
+</html>
