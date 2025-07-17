@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap - Piogoldcoin ($PGC)</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #000000;
+            --gold: #FFD700;
+            --dark-gold: #B8860B;
+            --bg-dark: #121212;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+        }
+        .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(to right, var(--gold), var(--dark-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .gold-border {
+            border-color: var(--gold);
+        }
+        .gold-bg {
+            background-color: var(--gold);
+        }
+        .hover-gold:hover {
+            color: var(--gold);
+        }
+        .nav-gradient {
+            background: linear-gradient(90deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+        }
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--gold);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        .timeline-container {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -17px;
+            background-color: var(--bg-dark);
+            border: 4px solid var(--gold);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .left {
+            left: 0;
+        }
+        .right {
+            left: 50%;
+        }
+        .left::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            right: 30px;
+            border: medium solid var(--gold);
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent var(--gold);
+        }
+        .right::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            left: 30px;
+            border: medium solid var(--gold);
+            border-width: 10px 10px 10px 0;
+            border-color: transparent var(--gold) transparent transparent;
+        }
+        .right::after {
+            left: -16px;
+        }
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: #1a1a1a;
+            position: relative;
+            border-radius: 6px;
+            border: 1px solid var(--gold);
+        }
+        .completed {
+            border-left: 4px solid #10B981;
+        }
+        .in-progress {
+            border-left: 4px solid var(--gold);
+        }
+        .planned {
+            border-left: 4px solid #6B7280;
+        }
+        @media screen and (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+            .timeline-container {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            .timeline-container::before {
+                left: 60px;
+                border: medium solid var(--gold);
+                border-width: 10px 10px 10px 0;
+                border-color: transparent var(--gold) transparent transparent;
+            }
+            .left::after, .right::after {
+                left: 15px;
+            }
+            .right {
+                left: 0%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-gradient py-4 px-6 border-b gold-border sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path>
+                </svg>
+                <span class="text-2xl font-bold gold-gradient-text font-cinzel">PIOGOLDCOIN</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="about.html" class="hover-gold transition">About</a>
+                <a href="tokenomics.html" class="hover-gold transition">Tokenomics</a>
+                <a href="ecosystem.html" class="hover-gold transition">Ecosystem</a>
+                <a href="gold.html" class="hover-gold transition">Gold</a>
+                <a href="charity.html" class="hover-gold transition">Charity</a>
+                <button id="connectWallet" class="px-4 py-2 rounded-full border gold-border hover:bg-opacity-10 hover:bg-gold transition">
+                    Connect Wallet
+                </button>
+            </div>
+            <button id="mobileMenuButton" class="md:hidden text-gold">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden hidden bg-gray-900 py-4 px-6 absolute left-0 right-0 top-16 shadow-lg">
+            <div class="flex flex-col space-y-4">
+                <a href="about.html" class="hover-gold">About</a>
+                <a href="tokenomics.html" class="hover-gold">Tokenomics</a>
+                <a href="ecosystem.html" class="hover-gold">Ecosystem</a>
+                <a href="gold.html" class="hover-gold">Gold</a>
+                <a href="charity.html" class="hover-gold">Charity</a>
+                <button id="connectWalletMobile" class="w-full py-2 border gold-border rounded-full hover:bg-opacity-10 hover:bg-gold">
+                    Connect Wallet
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-24 px-6 text-center bg-gradient-to-b from-black to-gray-900">
+        <div class="container mx-auto max-w-5xl">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 gold-gradient-text font-cinzel leading-tight">
+                Piogoldcoin Roadmap
+            </h1>
+            <p class="text-xl mb-10 max-w-3xl mx-auto opacity-90">
+                Our strategic development timeline from token launch to full blockchain ecosystem
+            </p>
+            <div class="flex justify-center gap-4">
+                <button id="viewWhitepaper" class="px-8 py-3 rounded-full border gold-border hover:bg-opacity-10 hover:bg-gold transition">
+                    View Whitepaper
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Timeline -->
+    <section class="py-20 px-6">
+        <div class="container mx-auto">
+            <div class="timeline">
+                <!-- Q1 2025 -->
+                <div class="timeline-container left">
+                    <div class="timeline-content completed">
+                        <div class="flex items-center mb-2">
+                            <span class="text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-800">COMPLETED</span>
+                            <span class="text-xs ml-2 opacity-80">Q1 2025</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 gold-gradient-text">Token Launch on Polygon</h3>
+                        <ul class="space-y-2 text-sm opacity-90">
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>$PGC token deployment</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Initial liquidity pools</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Basic swap functionality</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Q2 2025 -->
+                <div class="timeline-container right">
+                    <div class="timeline-content completed">
+                        <div class="flex items-center mb-2">
+                            <span class="text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-800">COMPLETED</span>
+                            <span class="text-xs ml-2 opacity-80">Q2 2025</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 gold-gradient-text">Ecosystem Foundations</h3>
+                        <ul class="space-y-2 text-sm opacity-90">
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>LegacyUnlocked.io launch</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Cancer Charity Foundation setup</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Initial gold redemption contracts</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Q3 2025 -->
+                <div class="timeline-container left">
+                    <div class="timeline-content in-progress">
+                        <div class="flex items-center mb-2">
+                            <span class="text-xs font-semibold px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">IN PROGRESS</span>
+                            <span class="text-xs ml-2 opacity-80">Q3 2025</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 gold-gradient-text">Ecosystem Expansion</h3>
+                        <ul class="space-y-2 text-sm opacity-90">
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Econoverse.io game launch</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Enhanced swap engine</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Haven Chain prototype</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Q4 2025 -->
+                <div class="timeline-container right">
+                    <div class="timeline-content planned">
+                        <div class="flex items-center mb-2">
+                            <span class="text-xs font-semibold px-2 py-1 rounded-full bg-gray-100 text-gray-800">PLANNED</span>
+                            <span class="text-xs ml-2 opacity-80">Q4 2025</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 gold-gradient-text">Gold Integration</h3>
+                        <ul class="space-y-2 text-sm opacity-90">
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <span>Full gold redemption system</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <span>Tiira Gold Mine partnership</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <span>Physical gold certification</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Q1 2026 -->
+                <div class="timeline-container left">
+                    <div class="timeline-content planned">
+                        <div class="flex items-center mb-2">
+                            <span class="text-xs font-semibold px-2 py-1 rounded-full bg-gray-100 text-gray-800">PLANNED</span>
+                            <span class="text-xs ml-2 opacity-80">Q1 2026</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 gold-gradient-text">Pioblock Development</h3>
+                        <ul class="space-y-2 text-sm opacity-90">
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <span>Custom blockchain testnet</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <span>Validator node setup</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <span>Migration planning</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Q2 2026 -->
+                <div class="timeline-container right">
+                    <div class="timeline-content planned">
+                        <div class="flex items-center mb-2">
+                            <span class="text-xs font-semibold px-2 py-1 rounded-full bg-gray-100 text-gray-800">PLANNED</span>
+                            <span class="text-xs ml-2 opacity-80">Q2 2026</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 gold-gradient-text">Full Ecosystem Launch</h3>
+                        <ul class="space-y-2 text-sm opacity-90">
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <span>Pioblock mainnet launch</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <span>Token migration from Polygon</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-4 h-4 mt-0.5 mr-2 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <span>Full DAO governance</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Milestones -->
+    <section class="py-20 px-6 bg-gray-900">
+        <div class="container mx-auto max-w-5xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4 gold-gradient-text font-cinzel">Technical Milestones</h2>
+                <p class="text-xl max-w-3xl mx-auto opacity-90">
+                    Key development targets for the Piogoldcoin ecosystem
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="border gold-border rounded-xl p-8 bg-gray-800">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold gold-gradient-text">Smart Contract Upgrades</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Q3 2025: Enhanced token utilities</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Q4 2025: Gold redemption smart contracts</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mt-1 mr-2 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Q1 2026: Cross-chain migration contracts</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="border gold-border rounded-xl p-8 bg-gray-800">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold gold-gradient-text">Blockchain Development</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mt-1 mr-2 text-yellow-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            <span>Q3 2025: Pioblock architecture design</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mt-1 mr-2 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            <span>Q4 2025: Testnet deployment</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 mt-1 mr-2 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            <span>Q2 2026: Mainnet launch</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Engagement -->
+    <section class="py-20 px-6">
+        <div class="container mx-auto max-w-5xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4 gold-gradient-text font-cinzel">Community Engagement</h2>
+                <p class="text-xl max-w-3xl mx-auto opacity-90">
+                    Our plans for growing and supporting the Piogoldcoin community
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Engagement 1 -->
+                <div class="border gold-border rounded-xl p-6 bg-gray-800">
+                    <div class="w-14 h-14 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Community Governance</h3>
+                    <p class="opacity-90 text-sm">
+                        Progressive decentralization with DAO voting on ecosystem decisions starting Q1 2026
+                    </p>
+                </div>
+                
+                <!-- Engagement 2 -->
+                <div class="border gold-border rounded-xl p-6 bg-gray-800">
+                    <div class="w-14 h-14 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">AMA Sessions</h3>
+                    <p class="opacity-90 text-sm">
+                        Monthly Ask-Me-Anything sessions with the founder and development team
+                    </p>
+                </div>
+                
+                <!-- Engagement 3 -->
+                <div class="border gold-border rounded-xl p-6 bg-gray-800">
+                    <div class="w-14 h-14 rounded-full bg-opacity-10 bg-gold flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Education</h3>
+                    <p class="opacity-90 text-sm">
+                        Comprehensive documentation and tutorials for all ecosystem components
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t gold-border pt-12 pb-8 px-6">
+        <div class="container mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path>
+                        </svg>
+                        <span class="text-xl font-bold gold-gradient-text font-cinzel">PIOGOLDCOIN</span>
+                    </div>
+                    <p class="opacity-80">Blockchain-powered, justice-rooted, asset-backed digital economy.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 gold-gradient-text">Navigation</h4>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="opacity-80 hover:opacity-100 hover-gold transition">About</a></li>
+                        <li><a href="tokenomics.html" class="opacity-80 hover:opacity-100 hover-gold transition">Tokenomics</a></li>
+                        <li><a href="ecosystem.html" class="opacity-80 hover:opacity-100 hover-gold transition">Ecosystem</a></li>
+                        <li><a href="gold.html" class="opacity-80 hover:opacity-100 hover-gold transition">Gold Redemption</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 gold-gradient-text">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Whitepaper</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Audit Reports</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">GitHub</a></li>
+                        <li><a href="roadmap.html" class="opacity-80 hover:opacity-100 hover-gold transition">Roadmap</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 gold-gradient-text">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full border gold-border flex items-center justify-center hover:bg-gold hover:border-black hover:text-black transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.
