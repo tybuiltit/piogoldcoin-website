@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swap $PGC | Piogoldcoin</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #000000;
+            --gold: #FFD700;
+            --dark-gold: #B8860B;
+            --bg-dark: #121212;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            min-height: 100vh;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(to right, var(--gold), var(--dark-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .gold-border {
+            border-color: var(--gold);
+        }
+        .gold-bg {
+            background-color: var(--gold);
+        }
+        .hover-gold:hover {
+            color: var(--gold);
+        }
+        .nav-gradient {
+            background: linear-gradient(90deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+        }
+        .swap-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .swap-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.1);
+        }
+        .token-selector:hover {
+            background-color: rgba(255, 215, 0, 0.05);
+        }
+        .slippage-option.selected {
+            background-color: rgba(255, 215, 0, 0.2);
+            border-color: var(--gold);
+        }
+        .connect-wallet-btn {
+            transition: all 0.2s ease;
+        }
+        .connect-wallet-btn:hover {
+            transform: scale(1.02);
+        }
+        @media (max-width: 768px) {
+            .swap-container {
+                padding: 0 1rem;
+            }
+            .swap-card {
+                width: 100%;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900">
+    <!-- Navigation -->
+    <nav class="nav-gradient py-4 px-6 border-b gold-border sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path>
+                </svg>
+                <span class="text-2xl font-bold gold-gradient-text">SWAP.PIOGOLDCOIN</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <div id="price-container" class="flex items-center px-3 py-1 rounded-full bg-gray-800 mr-4">
+                    <span class="font-bold">$PGC:</span>
+                    <span id="current-price">Loading...</span>
+                    <span id="price-change" class="ml-2"></span>
+                </div>
+                <div id="wallet-display" class="hidden text-sm bg-gray-800 px-3 py-1 rounded-full"></div>
+                <div id="wallet-balance" class="hidden text-sm bg-gray-800 px-3 py-1 rounded-full"></div>
+                <button id="connectWallet" class="connect-wallet-btn px-4 py-2 rounded-full border gold-border hover:bg-opacity-10 hover:bg-gold transition">
+                    Connect Wallet
+                </button>
+            </div>
+            <button id="mobileMenuButton" class="md:hidden text-gold">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden hidden bg-gray-900 py-4 px-6 absolute left-0 right-0 top-16 shadow-lg">
+            <div class="flex flex-col space-y-4">
+                <div id="price-container-mobile" class="pt-2">
+                    <span class="font-bold">$PGC:</span>
+                    <span id="current-price-mobile">Loading...</span>
+                    <span id="price-change-mobile" class="ml-2"></span>
+                </div>
+                <div id="wallet-display-mobile" class="hidden text-sm bg-gray-800 px-3 py-2 rounded-full"></div>
+                <div id="wallet-balance-mobile" class="hidden text-sm bg-gray-800 px-3 py-2 rounded-full"></div>
+                <button id="connectWalletMobile" class="w-full py-2 border gold-border rounded-full hover:bg-opacity-10 hover:bg-gold">
+                    Connect Wallet
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Swap Interface -->
+    <main class="swap-container py-12 px-4 max-w-2xl mx-auto">
+        <div class="swap-card bg-gray-800 border gold-border rounded-2xl p-6 mb-8">
+            <!-- Swap Header -->
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold gold-gradient-text">Swap Tokens</h1>
+                <div class="flex items-center space-x-2">
+                    <button id="settings-btn" class="p-2 rounded-full hover:bg-gray-700">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Swap Form -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-sm text-gray-400">From</label>
+                    <div class="text-sm text-gray-400">
+                        Balance: <span id="from-balance">0.0</span>
+                    </div>
+                </div>
+                <div class="flex items-center bg-gray-700 rounded-xl p-3 border border-gray-600">
+                    <input type="number" id="from-amount" placeholder="0.0" class="w-full bg-transparent text-2xl outline-none">
+                    <button id="from-token-selector" class="token-selector flex items-center bg-gray-800 rounded-lg px-3 py-2 border gold-border ml-2">
+                        <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT" class="w-6 h-6 mr-2" id="from-token-icon">
+                        <span id="from-token-symbol" class="font-medium">USDT</span>
+                        <svg class="w-4 h-4 ml-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Swap Direction Button -->
+            <div class="flex justify-center my-2">
+                <button id="switch-tokens" class="p-2 bg-gray-700 rounded-full border gold-border hover:bg-gray-600 transition-transform hover:rotate-180">
+                    <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- To Token -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-sm text-gray-400">To</label>
+                    <div class="text-sm text-gray-400">
+                        Balance: <span id="to-balance">0.0</span>
+                    </div>
+                </div>
+                <div class="flex items-center bg-gray-700 rounded-xl p-3 border border-gray-600">
+                    <input type="number" id="to-amount" placeholder="0.0" class="w-full bg-transparent text-2xl outline-none" readonly>
+                    <button id="to-token-selector" class="token-selector flex items-center bg-gray-800 rounded-lg px-3 py-2 border gold-border ml-2">
+                        <img src="https://via.placeholder.com/32" alt="PGC" class="w-6 h-6 mr-2" id="to-token-icon">
+                        <span id="to-token-symbol" class="font-medium">PGC</span>
+                        <svg class="w-4 h-4 ml-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Swap Details -->
+            <div class="bg-gray-700 rounded-xl p-4 mb-6">
+                <div class="flex justify-between text-sm mb-2">
+                    <span class="text-gray-400">Exchange Rate</span>
+                    <span id="exchange-rate" class="font-medium">1 USDT = 1.25 PGC</span>
+                </div>
+                <div class="flex justify-between text-sm mb-2">
+                    <span class="text-gray-400">Price Impact</span>
+                    <span id="price-impact" class="text-green-400">0.05%</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-400">Liquidity Provider Fee</span>
+                    <span id="lp-fee" class="text-gray-400">0.3%</span>
+                </div>
+            </div>
+
+            <!-- Swap Button -->
+            <button id="swap-button" class="w-full py-4 rounded-xl bg-gold text-black font-bold text-lg hover:bg-opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                Connect Wallet
+            </button>
+        </div>
+
+        <!-- Advanced Options (Initially Hidden) -->
+        <div id="settings-panel" class="swap-card bg-gray-800 border gold-border rounded-2xl p-6 mb-8 hidden">
+            <h2 class="text-xl font-bold mb-4">Transaction Settings</h2>
+            
+            <div class="mb-6">
+                <label class="block text-sm text-gray-400 mb-2">Slippage Tolerance</label>
+                <div class="flex space-x-2">
+                    <button class="slippage-option px-3 py-1 rounded border gold-border" data-slippage="0.5">0.5%</button>
+                    <button class="slippage-option px-3 py-1 rounded border gold-border selected" data-slippage="1">1%</button>
+                    <button class="slippage-option px-3 py-1 rounded border gold-border" data-slippage="3">3%</button>
+                    <div class="relative flex-1">
+                        <input type="number" id="custom-slippage" placeholder="Custom" class="w-full bg-gray-700 rounded px-3 py-1 border gold-border text-right">
+                        <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-sm text-gray-400 mb-2">Transaction Deadline</label>
+                <div class="flex items-center">
+                    <input type="number" id="tx-deadline" value="20" class="w-20 bg-gray-700 rounded px-3 py-1 border gold-border text-right mr-2">
+                    <span class="text-gray-400">minutes</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center">
+                <input type="checkbox" id="expert-mode" class="rounded gold-border text-gold focus:ring-gold">
+                <label for="expert-mode" class="ml-2 text-sm text-gray-400">Expert Mode</label>
+            </div>
+        </div>
+
+        <!-- Charity Donation Section -->
+        <div class="swap-card bg-gray-800 border gold-border rounded-2xl p-6">
+            <h2 class="text-xl font-bold mb-4 gold-gradient-text">Direct Charity Donation</h2>
+            <p class="text-gray-400 mb-6">Convert tokens and donate directly to verified charities with 0% platform fees.</p>
+            
+            <div class="mb-6">
+                <label class="block text-sm text-gray-400 mb-2">Donation Amount</label>
+                <div class="flex items-center bg-gray-700 rounded-xl p-3 border border-gray-600">
+                    <input type="number" id="donation-amount" placeholder="0.0" class="w-full bg-transparent text-xl outline-none">
+                    <button id="donation-token-selector" class="token-selector flex items-center bg-gray-800 rounded-lg px-3 py-2 border gold-border ml-2">
+                        <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT" class="w-5 h-5 mr-2">
+                        <span class="font-medium">USDT</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-sm text-gray-400 mb-2">Select Charity</label>
+                <select id="charity-select" class="w-full bg-gray-700 rounded-xl p-3 border border-gray-600">
+                    <option value="ccf">Cancer Charity Foundation</option>
+                    <option value="isbet">ISBET Brainery Education</option>
+                    <option value="haven">The Haven Chain Rehabilitation</option>
+                </select>
+            </div>
+            
+            <div class="bg-gray-700 rounded-xl p-4 mb-6">
+                <div class="flex justify-between text-sm mb-2">
+                    <span class="text-gray-400">You donate</span>
+                    <span id="donation-summary" class="font-medium">0 USDT</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-400">Charity receives</span>
+                    <span id="charity-receives" class="font-medium">0 USDT (100%)</span>
+                </div>
+            </div>
+            
+            <button id="donate-button" class="w-full py-4 rounded-xl bg-purple-600 text-white font-bold text-lg hover:bg-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                Donate Now
+            </button>
+        </div>
+    </main>
+
+    <!-- Token Selector Modal -->
+    <div id="token-selector-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center hidden">
+        <div class="bg-gray-800 rounded-2xl border gold-border w-full max-w-md max-h-[80vh] overflow-hidden mx-4">
+            <div class="p-4 border-b gold-border">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold">Select Token</h3>
+                    <button id="close-token-selector" class="p-1 rounded-full hover:bg-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <input type="text" id="token-search" placeholder="Search token name or paste address" class="w-full bg-gray-700 rounded-xl px-4 py-2 border border-gray-600">
+            </div>
+            <div class="overflow-y-auto max-h-[60vh]">
+                <div class="p-2">
+                    <div class="p-2 hover:bg-gray-700 rounded-lg cursor-pointer flex items-center token-option" data-symbol="PGC" data-address="0xYourPgcContract" data-icon="https://via.placeholder.com/32">
+                        <img src="https://via.placeholder.com/32" alt="PGC" class="w-8 h-8 mr-3">
+                        <div>
+                            <div class="font-medium">Piogoldcoin</div>
+                            <div class="text-sm text-gray-400">PGC</div>
+                        </div>
+                    </div>
+                    <div class="p-2 hover:bg-gray-700 rounded-lg cursor-pointer flex items-center token-option" data-symbol="USDT" data-address="0xc2132D05D31c914a87C6611C10748AEb04B58e8F" data-icon="https://cryptologos.cc/logos/tether-usdt-logo.png">
+                        <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT" class="w-8 h-8 mr-3">
+                        <div>
+                            <div class="font-medium">Tether USD</div>
+                            <div class="text-sm text-gray-400">USDT</div>
+                        </div>
+                    </div>
+                    <div class="p-2 hover:bg-gray-700 rounded-lg cursor-pointer flex items-center token-option" data-symbol="MATIC" data-address="0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" data-icon="https://cryptologos.cc/logos/polygon-matic-logo.png">
+                        <img src="https://cryptologos.cc/logos/polygon-matic-logo.png" alt="MATIC" class="w-8 h-8 mr-3">
+                        <div>
+                            <div class="font-medium">Polygon</div>
+                            <div class="text-sm text-gray-400">MATIC</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Confirmation Modal -->
+    <div id="tx-confirm-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center hidden">
+        <div class="bg-gray-800 rounded-2xl border gold-border w-full max-w-md mx-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold" id="tx-confirm-title">Confirm Swap</h3>
+                    <button id="close-tx-confirm" class="p-1 rounded-full hover:bg-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="bg-gray-700 rounded-xl p-4 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <span id="tx-from-amount" class="text-2xl font-bold">1.0</span>
+                        <div class="flex items-center">
+                            <img id="tx-from-icon" src="https://cryptologos.cc/logos/tether-usdt-logo.png" class="w-6 h-6 mr-2">
+                            <span id="tx-from-symbol" class="font-medium">USDT</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center my-2">
+                        <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                        </svg>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span id="tx-to-amount" class="text-2xl font-bold">1.25</span>
+                        <div class="flex items-center">
+                            <img id="tx-to-icon" src="https://via.placeholder.com/32" class="w-6 h-6 mr-2">
+                            <span id="tx-to-symbol" class="font-medium">PGC</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-gray-400">Exchange Rate</span>
+                        <span id="tx-exchange-rate" class="font-medium">1 USDT = 1.25 PGC</span>
+                    </div>
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-gray-400">Price Impact</span>
+                        <span id="tx-price-impact" class="text-green-400">0.05%</span>
+                    </div>
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-gray-400">Network Fee</span>
+                        <span id="tx-network-fee" class="text-gray-400">~$0.50</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-400">Slippage Tolerance</span>
+                        <span id="tx-slippage" class="text-gray-400">1%</span>
+                    </div>
+                </div>
+                
+                <button id="confirm-tx-button" class="w-full py-3 rounded-xl bg-gold text-black font-bold text-lg hover:bg-opacity-90 transition">
+                    Confirm Transaction
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Status Modal -->
+    <div id="tx-status-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center hidden">
+        <div class="bg-gray-800 rounded-2xl border gold-border w-full max-w-md mx-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold" id="tx-status-title">Transaction Submitted</h3>
+                    <button id="close-tx-status" class="p-1 rounded-full hover:bg-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="text-center mb-6">
+                    <div id="tx-success-icon" class="hidden mx-auto w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <div id="tx-pending-icon" class="mx-auto w-16 h-16 bg-gold rounded-full flex items-center justify-center mb-4 animate-spin">
+                        <svg class="w-10 h-10 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                    </div>
+                    <div id="tx-fail-icon" class="hidden mx-auto w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </div>
+                    
+                    <p id="tx-status-message" class="mb-4">Waiting for confirmation...</p>
+                    <a id="tx-view-explorer" href="#" target="_blank" class="text-gold hover:underline">View on explorer</a>
+                </div>
+                
+                <button id="close-tx-status-btn" class="w-full py-3 rounded-xl bg-gray-700 text-white font-bold text-lg hover:bg-gray-600 transition hidden">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t gold-border pt-8 pb-6 px-6">
+        <div class="container mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path>
+                        </svg>
+                        <span class="text-xl font-bold gold-gradient-text">PIOGOLDCOIN</span>
+                    </div>
+                    <p class="opacity-80">Smart-contract-powered swap engine for the Piogoldcoin ecosystem.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 gold-gradient-text">Features</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Token Swaps</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Peer Payments</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Charity Donations</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Low Fees</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 gold-gradient-text">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Documentation</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Smart Contracts</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Audit Reports</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">GitHub</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 gold-gradient-text">Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Help Center</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Contact Us</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 hover-gold transition">Status</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-6 text-center opacity-70 text-sm">
+                <p>© 2025 Piogoldcoin. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+    <script>
+        // Configuration
+        const CONFIG = {
+            PGC_ADDRESS: '0xYOUR_PGC_CONTRACT_ADDRESS',
+            USDT_ADDRESS: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F', // Polygon USDT
+            SWAP_CONTRACT: '0xYOUR_SWAP_CONTRACT_ADDRESS',
+            CHARITY_CONTRACT: '0xYOUR_CHARITY_CONTRACT_ADDRESS',
+            RPC_URL: 'https://polygon-rpc.com/',
+            EXPLORER_URL: 'https://polygonscan.com/',
+            DEFAULT_SLIPPAGE: 1, // 1%
+            DEFAULT_DEADLINE: 20 // minutes
+        };
+
+        // State
+        let state = {
+            connected: false,
+            account: null,
+            web3: null,
+            fromToken: {
+                symbol: 'USDT',
+                address: CONFIG.USDT_ADDRESS,
+                icon: 'https://cryptologos.cc/logos/tether-usdt-logo.png',
+                balance: 0,
+                decimals: 6
+            },
+            toToken: {
+                symbol: 'PGC',
+                address: CONFIG.PGC_ADDRESS,
+                icon: 'https://via.placeholder.com/32',
+                balance: 0,
+                decimals: 18
+            },
+            donationToken: {
+                symbol: 'USDT',
+                address: CONFIG.USDT_ADDRESS,
+                icon: 'https://cryptologos.cc/logos/tether-usdt-logo.png',
+                balance: 0,
+                decimals: 6
+            },
+            slippage: CONFIG.DEFAULT_SLIPPAGE,
+            deadline: CONFIG.DEFAULT_DEADLINE,
+            expertMode: false,
+            currentAction: null // 'swap' or 'donate'
+        };
+
+        // DOM Elements
+        const elements = {
+            // Wallet
+            connectWallet: document.getElementById('connectWallet'),
+            connectWalletMobile: document.getElementById('connectWalletMobile'),
+            walletDisplay: document.getElementById('wallet-display'),
+            walletDisplayMobile: document.getElementById('wallet-display-mobile'),
+            walletBalance: document.getElementById('wallet-balance'),
+            walletBalanceMobile: document.getElementById('wallet-balance-mobile'),
+            
+            // Price display
+            priceContainer: document.getElementById('price-container'),
+            currentPrice: document.getElementById('current-price'),
+            priceChange: document.getElementById('price-change'),
+            
+            // Swap form
+            fromAmount: document.getElementById('from-amount'),
+            toAmount: document.getElementById('to-amount'),
+            fromTokenSelector: document.getElementById('from-token-selector'),
+            toTokenSelector: document.getElementById('to-token-selector'),
+            fromTokenSymbol: document.getElementById('from-token-symbol'),
+            toTokenSymbol: document.getElementById('to-token-symbol'),
+            fromTokenIcon: document.getElementById('from-token-icon'),
+            toTokenIcon: document.getElementById('to-token-icon'),
+            fromBalance: document.getElementById('from-balance'),
+            toBalance: document.getElementById('to-balance'),
+            switchTokens: document.getElementById('switch-tokens'),
+            exchangeRate: document.getElementById('exchange-rate'),
+            priceImpact: document.getElementById('price-impact'),
+            lpFee: document.getElementById('lp-fee'),
+            swapButton: document.getElementById('swap-button'),
+            
+            // Donation form
+            donationAmount: document.getElementById('donation-amount'),
+            donationTokenSelector: document.getElementById('donation-token-selector'),
+            charitySelect: document.getElementById('charity-select'),
+            donationSummary: document.getElementById('donation-summary'),
+            charityReceives: document.getElementById('charity-receives'),
+            donateButton: document.getElementById('donate-button'),
+            
+            // Settings
+            settingsBtn: document.getElementById('settings-btn'),
+            settingsPanel: document.getElementById('settings-panel'),
+            slippageOptions: document.querySelectorAll('.slippage-option'),
+            customSlippage: document.getElementById('custom-slippage'),
+            txDeadline: document.getElementById('tx-deadline'),
+            expertMode: document.getElementById('expert-mode'),
+            
+            // Modals
+            tokenSelectorModal: document.getElementById('token-selector-modal'),
+            tokenSearch: document.getElementById('token-search'),
+            closeTokenSelector: document.getElementById('close-token-selector'),
+            tokenOptions: document.querySelectorAll('.token-option'),
+            
+            txConfirmModal: document.getElementById('tx-confirm-modal'),
+            closeTxConfirm: document.getElementById('close-tx-confirm'),
+            txConfirmTitle: document.getElementById('tx-confirm-title'),
+            txFromAmount: document.getElementById('tx-from-amount'),
+            txToAmount: document.getElementById('tx-to-amount'),
+            txFromSymbol: document.getElementById('tx-from-symbol'),
+            txToSymbol: document.getElementById('tx-to-symbol'),
+            txFromIcon: document.getElementById('tx-from-icon'),
+            txToIcon: document.getElementById('tx-to-icon'),
+            txExchangeRate: document.getElementById('tx-exchange-rate'),
+            txPriceImpact: document.getElementById('tx-price-impact'),
+            txNetworkFee: document.getElementById('tx-network-fee'),
+            txSlippage: document.getElementById('tx-slippage'),
+            confirmTxButton: document.getElementById('confirm-tx-button'),
+            
+            txStatusModal: document.getElementById('tx-status-modal'),
+            closeTxStatus: document.getElementById('close-tx-status'),
+            txStatusTitle: document.getElementById('tx-status-title'),
+            txStatusMessage: document.getElementById('tx-status-message'),
+            txViewExplorer: document.getElementById('tx-view-explorer'),
+            txSuccessIcon: document.getElementById('tx-success-icon'),
+            txPendingIcon: document.getElementById('tx-pending-icon'),
+            txFailIcon: document.getElementById('tx-fail-icon'),
+            closeTxStatusBtn: document.getElementById('close-tx-status-btn'),
+            
+            // Mobile menu
+            mobileMenuButton: document.getElementById('mobileMenuButton'),
+            mobileMenu: document.getElementById('mobileMenu')
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            setupEventListeners();
+            checkConnectedWallet();
+            loadTokenList();
+            updatePriceDisplay();
+        });
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Wallet connection
+            elements.connectWallet.addEventListener('click', handleWalletConnection);
+            elements.connectWalletMobile.addEventListener('click', handleWalletConnection);
+            
+            // Token selection
+            elements.fromTokenSelector.addEventListener('click', () => openTokenSelector('from'));
+            elements.toTokenSelector.addEventListener('click', () => openTokenSelector('to'));
+            elements.donationTokenSelector.addEventListener('click', () => openTokenSelector('donation'));
+            elements.closeTokenSelector.addEventListener('click', closeTokenSelector);
+            
+            // Swap form
+            elements.fromAmount.addEventListener('input', updateSwapOutput);
+            elements.switchTokens.addEventListener('click', switchTokens);
+            elements.swapButton.addEventListener('click', () => prepareTransaction('swap'));
+            
+            // Donation form
+            elements.donationAmount.addEventListener('input', updateDonationSummary);
+            elements.donateButton.addEventListener('click', () => prepareTransaction('donate'));
+            
+            // Settings
+            elements.settingsBtn.addEventListener('click', toggleSettingsPanel);
+            elements.slippageOptions.forEach(option => {
+                option.addEventListener('click', () => selectSlippage(option));
+            });
+            elements.customSlippage.addEventListener('input', updateCustomSlippage);
+            elements.txDeadline.addEventListener('input', updateDeadline);
+            elements.expertMode.addEventListener('change', toggleExpertMode);
+            
+            // Transaction confirmation
+            elements.closeTxConfirm.addEventListener('click', closeTxConfirmModal);
+            elements.confirmTxButton.addEventListener('click', executeTransaction);
+            
+            // Transaction status
+            elements.closeTxStatus.addEventListener('click', closeTxStatusModal);
+            elements.closeTxStatusBtn.addEventListener('click', closeTxStatusModal);
+            
+            // Mobile menu
+            elements.mobileMenuButton.addEventListener('click', toggleMobileMenu);
+        }
+
+        // Wallet Functions
+        async function handleWalletConnection() {
+            if (state.connected) {
+                disconnectWallet();
+                return;
+            }
+
+            if (window.ethereum) {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    state.account = accounts[0];
+                    state.connected = true;
+                    
+                    // Initialize Web3
+                    state.web3 = new Web3(window.ethereum);
+                    
+                    // Update UI
+                    updateWalletUI();
+                    setupWalletEvents();
+                    
+                    // Load balances
+                    fetchBalances();
+                    
+                } catch (error) {
+                    console.error("User denied account access", error);
+                }
+            } else {
+                alert('Please install MetaMask or another Web3 wallet to connect');
+            }
+        }
+
+        function updateWalletUI() {
+            const shortAddress = `${state.account.substring(0, 6)}...${state.account.substring(38)}`;
+            
+            // Update wallet display
+            if (elements.walletDisplay) elements.walletDisplay.textContent = shortAddress;
+            if (elements.walletDisplayMobile) elements.walletDisplayMobile.textContent = shortAddress;
+            
+            // Show/hide elements
+            if (elements.walletDisplay) elements.walletDisplay.classList.toggle('hidden', !state.connected);
+            if (elements.walletDisplayMobile) elements.walletDisplayMobile.classList.toggle('hidden', !state.connected);
+            if (elements.walletBalance) elements.walletBalance.classList.toggle('hidden', !state.connected);
+            if (elements.walletBalanceMobile) elements.walletBalanceMobile.classList.toggle('hidden', !state.connected);
+            
+            // Update button text
+            const connectButtons = [elements.connectWallet, elements.connectWalletMobile];
+            connectButtons.forEach(btn => {
+                if (!btn) return;
+                btn.textContent = state.connected ? 'Disconnect' : 'Connect Wallet';
+                btn.classList.toggle('border-gold', !state.connected);
+                btn.classList.toggle('bg-red-500', state.connected);
+                btn.classList.toggle('border-red-500', state.connected);
+            });
+            
+            // Enable/disable action buttons
+            elements.swapButton.disabled = !state.connected;
+            elements.donateButton.disabled = !state.connected;
+            
+            if (state.connected) {
+                elements.swapButton.textContent = 'Swap';
+                elements.donateButton.textContent = 'Donate Now';
+            } else {
+                elements.swapButton.textContent = 'Connect Wallet';
+                elements.donateButton.textContent = 'Connect Wallet';
+            }
+        }
+
+        function setupWalletEvents() {
+            if (window.ethereum) {
+                window.ethereum.on('accountsChanged', (accounts) => {
+                    if (accounts.length === 0) {
+                        disconnectWallet();
+                    } else {
+                        state.account = accounts[0];
+                        updateWalletUI();
+                        fetchBalances();
+                    }
+                });
+                
+                window.ethereum.on('chainChanged', () => {
+                    window.location.reload();
+                });
+                
+                window.ethereum.on('disconnect', () => {
+                    disconnectWallet();
+                });
+            }
+        }
+
+        function disconnectWallet() {
+            state.connected = false;
+            state.account = null;
+            state.web3 = null;
+            updateWalletUI();
+        }
+
+        function checkConnectedWallet() {
+            if (window.ethereum && window.ethereum.selectedAddress) {
+                state.account = window.ethereum.selectedAddress;
+                state.connected = true;
+                state.web3 = new Web3(window.ethereum);
+                updateWalletUI();
+                fetchBalances();
+            }
+        }
+
+        // Token Functions
+        async function fetchBalances() {
+            if (!state.connected) return;
+            
+            try {
+                // Fetch from token balance
+                if (state.fromToken.address === '0x0000000000000000000000000000000000000000') {
+                    // Native token (MATIC)
+                    const balance = await state.web3.eth.getBalance(state.account);
+                    state.fromToken.balance = state.web3.utils.fromWei(balance, 'ether');
+                } else {
+                    // ERC-20 token
+                    const contract = new state.web3.eth.Contract(ERC20_ABI, state.fromToken.address);
+                    const balance = await contract.methods.balanceOf(state.account).call();
+                    state.fromToken.balance = balance / (10 ** state.fromToken.decimals);
+                }
+                
+                // Fetch to token balance
+                if (state.toToken.address === '0x0000000000000000000000000000000000000000') {
+                    // Native token (MATIC)
+                    const balance = await state.web3.eth.getBalance(state.account);
+                    state.toToken.balance = state.web3.utils.fromWei(balance, 'ether');
+                } else {
+                    // ERC-20 token
+                    const contract = new state.web3.eth.Contract(ERC20_ABI, state.toToken.address);
+                    const balance = await contract.methods.balanceOf(state.account).call();
+                    state.toToken.balance = balance / (10 ** state.toToken.decimals);
+                }
+                
+                // Fetch donation token balance
+                if (state.donationToken.address === '0x0000000000000000000000000000000000000000') {
+                    // Native token (MATIC)
+                    const balance = await state.web3.eth.getBalance(state.account);
+                    state.donationToken.balance = state.web3.utils.fromWei(balance, 'ether');
+                } else {
+                    // ERC-20 token
+                    const contract = new state.web3.eth.Contract(ERC20_ABI, state.donationToken.address);
+                    const balance = await contract.methods.balanceOf(state.account).call();
+                    state.donationToken.balance = balance / (10 ** state.donationToken.decimals);
+                }
+                
+                // Update UI
+                elements.fromBalance.textContent = parseFloat(state.fromToken.balance).toFixed(4);
+                elements.toBalance.textContent = parseFloat(state.toToken.balance).toFixed(4);
+                
+                // Update wallet balance display (shows MATIC balance)
+                const maticBalance = await state.web3.eth.getBalance(state.account);
+                const formattedMatic = parseFloat(state.web3.utils.fromWei(maticBalance, 'ether')).toFixed(4);
+                if (elements.walletBalance) elements.walletBalance.textContent = `${formattedMatic} MATIC`;
+                if (elements.walletBalanceMobile) elements.walletBalanceMobile.textContent = `${formattedMatic} MATIC`;
+                
+            } catch (error) {
+                console.error("Error fetching balances:", error);
+            }
+        }
+
+        function loadTokenList() {
+            // In a real app, you might fetch this from an API or token list
+            const popularTokens = [
+                {
+                    symbol: 'PGC',
+                    name: 'Piogoldcoin',
+                    address: CONFIG.PGC_ADDRESS,
+                    icon: 'https://via.placeholder.com/32',
+                    decimals: 18
+                },
+                {
+                    symbol: 'USDT',
+                    name: 'Tether USD',
+                    address: CONFIG.USDT_ADDRESS,
+                    icon: 'https://cryptologos.cc/logos/tether-usdt-logo.png',
+                    decimals: 6
+                },
+                {
+                    symbol: 'MATIC',
+                    name: 'Polygon',
+                    address: '0x0000000000000000000000000000000000000000',
+                    icon: 'https://cryptologos.cc/logos/polygon-matic-logo.png',
+                    decimals: 18
+                }
+            ];
+            
+            // Render token list
+            const tokenListContainer = document.querySelector('#token-selector-modal .p-2');
+            tokenListContainer.innerHTML = '';
+            
+            popularTokens.forEach(token => {
+                const tokenElement = document.createElement('div');
+                tokenElement.className = 'p-2 hover:bg-gray-700 rounded-lg cursor-pointer flex items-center token-option';
+                tokenElement.dataset.symbol = token.symbol;
+                tokenElement.dataset.address = token.address;
+                tokenElement.dataset.icon = token.icon;
+                tokenElement.dataset.decimals = token.decimals;
+                
+                tokenElement.innerHTML = `
+                    <img src="${token.icon}" alt="${token.symbol}" class="w-8 h-8 mr-3">
+                    <div>
+                        <div class="font-medium">${token.name}</div>
+                        <div class="text-sm text-gray-400">${token.symbol}</div>
+                    </div>
+                `;
+                
+                tokenElement.addEventListener('click', () => selectToken(token));
+                tokenListContainer.appendChild(tokenElement);
+            });
+        }
+
+        function openTokenSelector(context) {
+            state.tokenSelectorContext = context;
+            elements.tokenSelectorModal.classList.remove('hidden');
+        }
+
+        function closeTokenSelector() {
+            elements.tokenSelectorModal.classList.add('hidden');
+        }
+
+        function selectToken(token) {
+            const selectedToken = {
+                symbol: token.symbol,
+                address: token.address,
+                icon: token.icon,
+                decimals: token.decimals,
+                balance: 0
+            };
+            
+            switch (state.tokenSelectorContext) {
+                case 'from':
+                    state.fromToken = selectedToken;
+                    elements.fromTokenSymbol.textContent = token.symbol;
+                    elements.fromTokenIcon.src = token.icon;
+                    break;
+                case 'to':
+                    state.toToken = selectedToken;
+                    elements.toTokenSymbol.textContent = token.symbol;
+                    elements.toTokenIcon.src = token.icon;
+                    break;
+                case 'donation':
+                    state.donationToken = selectedToken;
+                    // Update donation token display (you'd need to add this element)
+                    break;
+            }
+            
+            // Update balances
+            fetchBalances();
+            // Update swap rates
+            updateSwapOutput();
+            
+            closeTokenSelector();
+        }
+
+        function switchTokens() {
+            const temp = {...state.fromToken};
+            state.fromToken = {...state.toToken};
+            state.toToken = temp;
+            
+            // Update UI
+            elements.fromTokenSymbol.textContent = state.fromToken.symbol;
+            elements.fromTokenIcon.src = state.fromToken.icon;
+            elements.toTokenSymbol.textContent = state.toToken.symbol;
+            elements.toTokenIcon.src = state.toToken.icon;
+            
+            // Swap amounts if they exist
+            const fromAmount = elements.fromAmount.value;
+            const toAmount = elements.toAmount.value;
+            
+            if (fromAmount) {
+                elements.toAmount.value = fromAmount;
+                elements.fromAmount.value = toAmount;
+            }
+            
+            // Update balances
+            fetchBalances();
+            // Update swap rates
+            updateSwapOutput();
+        }
+
+        // Swap Functions
+        function updateSwapOutput() {
+            const inputAmount = parseFloat(elements.fromAmount.value);
+            
+            if (!inputAmount || isNaN(inputAmount)) {
+                elements.toAmount.value = '';
+                return;
+            }
+            
+            // In a real app, you would calculate this based on the exchange rate from your contract or DEX
+            const exchangeRate = 1.25; // 1 USDT = 1.25 PGC (example)
+            const outputAmount = inputAmount * exchangeRate;
+            
+            elements.toAmount.value = outputAmount.toFixed(6);
+            elements.exchangeRate.textContent = `1 ${state.fromToken.symbol} = ${exchangeRate} ${state.toToken.symbol}`;
+            
+            // Simulate price impact (0.05% to 0.5%)
+            const priceImpact = (0.05 + Math.random() * 0.45).toFixed(2);
+            elements.priceImpact.textContent = `${priceImpact}%`;
+            
+            // Set LP fee (0.3%)
+            elements.lpFee.textContent = '0.3%';
+        }
+
+        function updateDonationSummary() {
+            const donationAmount = parseFloat(elements.donationAmount.value);
+            
+            if (!donationAmount || isNaN(donationAmount)) {
+                elements.donationSummary.textContent = '0 ' + state.donationToken.symbol;
+                elements.charityReceives.textContent = '0 ' + state.donationToken.symbol + ' (100%)';
+                return;
+            }
+            
+            elements.donationSummary.textContent = donationAmount.toFixed(4) + ' ' + state.donationToken.symbol;
+            elements.charityReceives.textContent = donationAmount.toFixed(4) + ' ' + state.donationToken.symbol + ' (100%)';
+        }
+
+        // Settings Functions
+        function toggleSettingsPanel() {
+            elements.settingsPanel.classList.toggle('hidden');
+        }
+
+        function selectSlippage(option) {
+            elements.slippageOptions.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            state.slippage = parseFloat(option.dataset.slippage);
+            elements.customSlippage.value = '';
+        }
+
+        function updateCustomSlippage() {
+            const value = parseFloat(elements.customSlippage.value);
+            
+            if (!isNaN(value) && value >= 0.1 && value <= 50) {
+                elements.slippageOptions.forEach(opt => opt.classList.remove('selected'));
+                state.slippage = value;
+            }
+        }
+
+        function updateDeadline() {
+            const value = parseInt(elements.txDeadline.value);
+            
+            if (!isNaN(value) && value >= 1 && value <= 120) {
+                state.deadline = value;
+            }
+        }
+
+        function toggleExpertMode() {
+            state.expertMode = elements.expertMode.checked;
+            
+            if (state.expertMode) {
+                if (!confirm('Expert mode turns off confirmation screens and allows high slippage. Use at your own risk.')) {
+                    elements.expertMode.checked = false;
+                    state.expertMode = false;
+                }
+            }
+        }
+
+        // Transaction Functions
+        function prepareTransaction(action) {
+            state.currentAction = action;
+            
+            if (action === 'swap') {
+                const fromAmount = parseFloat(elements.fromAmount.value);
+                const toAmount = parseFloat(elements.toAmount.value);
+                
+                if (!fromAmount || isNaN(fromAmount)) {
+                    alert('Please enter a valid amount');
+                    return;
+                }
+                
+                // Update confirmation modal
+                elements.txConfirmTitle.textContent = 'Confirm Swap';
+                elements.txFromAmount.textContent = fromAmount.toFixed(4);
+                elements.txToAmount.textContent = toAmount.toFixed(4);
+                elements.txFromSymbol.textContent = state.fromToken.symbol;
+                elements.txToSymbol.textContent = state.toToken.symbol;
+                elements.txFromIcon.src = state.fromToken.icon;
+                elements.txToIcon.src = state.toToken.icon;
+                elements.txExchangeRate.textContent = elements.exchangeRate.textContent;
+                elements.txPriceImpact.textContent = elements.priceImpact.textContent;
+                elements.txNetworkFee.textContent = '~$0.50'; // Would calculate this
+                elements.txSlippage.textContent = state.slippage + '%';
+                
+                // Show confirmation modal
+                elements.txConfirmModal.classList.remove('hidden');
+                
+            } else if (action === 'donate') {
+                const donationAmount = parseFloat(elements.donationAmount.value);
+                const charity = elements.charitySelect.value;
+                const charityName = elements.charitySelect.options[elements.charitySelect.selectedIndex].text;
+                
+                if (!donationAmount || isNaN(donationAmount)) {
+                    alert('Please enter a valid donation amount');
+                    return;
+                }
+                
+                // Update confirmation modal
+                elements.txConfirmTitle.textContent = 'Confirm Donation';
+                elements.txFromAmount.textContent = donationAmount.toFixed(4);
+                elements.txToAmount.textContent = donationAmount.toFixed(4);
+                elements.txFromSymbol.textContent = state.donationToken.symbol;
+                elements.txToSymbol.textContent = charityName;
+                elements.txFromIcon.src = state.donationToken.icon;
+                elements.txToIcon.src = 'https://via.placeholder.com/32'; // Charity icon
+                elements.txExchangeRate.textContent = `1 ${state.donationToken.symbol} = 1 ${state.donationToken.symbol}`;
+                elements.txPriceImpact.textContent = '0%';
+                elements.txNetworkFee.textContent = '~$0.50'; // Would calculate this
+                elements.txSlippage.textContent = '0%';
+                
+                // Show confirmation modal
+                elements.txConfirmModal.classList.remove('hidden');
+            }
+        }
+
+        function closeTxConfirmModal() {
+            elements.txConfirmModal.classList.add('hidden');
+        }
+
+        async function executeTransaction() {
+            closeTxConfirmModal();
+            showTxStatusModal('pending');
+            
+            // Simulate transaction (in a real app, you would interact with your smart contracts)
+            setTimeout(() => {
+                // 90% chance of success for demo purposes
+                if (Math.random() > 0.1) {
+                    showTxStatusModal('success');
+                    
+                    // Reset forms on success
+                    if (state.currentAction === 'swap') {
+                        elements.fromAmount.value = '';
+                        elements.toAmount.value = '';
+                    } else if (state.currentAction === 'donate') {
+                        elements.donationAmount.value = '';
+                    }
+                    
+                    // Update balances
+                    fetchBalances();
+                } else {
+                    showTxStatusModal('failed');
+                }
+            }, 3000);
+        }
+
+        function showTxStatusModal(status) {
+            elements.txStatusModal.classList.remove('hidden');
+            elements.txSuccessIcon.classList.add('hidden');
+            elements.txPendingIcon.classList.add('hidden');
+            elements.txFailIcon.classList.add('hidden');
+            elements.closeTxStatusBtn.classList.add('hidden');
+            
+            switch (status) {
+                case 'pending':
+                    elements.txStatusTitle.textContent = 'Transaction Pending';
+                    elements.txStatusMessage.textContent = 'Waiting for confirmation...';
+                    elements.txPendingIcon.classList.remove('hidden');
+                    elements.txViewExplorer.href = '#';
+                    elements.txViewExplorer.textContent = 'View on explorer';
+                    break;
+                    
+                case 'success':
+                    elements.txStatusTitle.textContent = 'Transaction Successful';
+                    elements.txStatusMessage.textContent = state.currentAction === 'swap' 
+                        ? 'Your swap was completed successfully!' 
+                        : 'Your donation was sent successfully!';
+                    elements.txSuccessIcon.classList.remove('hidden');
+                    elements.txViewExplorer.href = '#';
+                    elements.txViewExplorer.textContent = 'View on explorer';
+                    elements.closeTxStatusBtn.classList.remove('hidden');
+                    break;
+                    
+                case 'failed':
+                    elements.txStatusTitle.textContent = 'Transaction Failed';
+                    elements.txStatusMessage.textContent = 'The transaction could not be completed. Please try again.';
+                    elements.txFailIcon.classList.remove('hidden');
+                    elements.txViewExplorer.href = '#';
+                    elements.txViewExplorer.textContent = 'View on explorer';
+                    elements.closeTxStatusBtn.classList.remove('hidden');
+                    break;
+            }
+        }
+
+        function closeTxStatusModal() {
+            elements.txStatusModal.classList.add('hidden');
+        }
+
+        // Price Feed
+        async function updatePriceDisplay() {
+            try {
+                // In a real app, you would fetch this from CoinGecko or your own API
+                const mockPrice = (3.1415 + Math.random() * 0.1).toFixed(4);
+                const mockChange = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 5).toFixed(2);
+                
+                if (elements.currentPrice) elements.currentPrice.textContent = `$${mockPrice}`;
+                if (elements.priceChange) {
+                    elements.priceChange.textContent = `${mockChange}%`;
+                    elements.priceChange.className = mockChange >= 0 ? 'text-green-400 ml-2' : 'text-red-400 ml-2';
+                }
+                
+                // Update mobile display
+                if (elements.currentPriceMobile) elements.currentPriceMobile.textContent = `$${mockPrice}`;
+                if (elements.priceChangeMobile) {
+                    elements.priceChangeMobile.textContent = `${mockChange}%`;
+                    elements.priceChangeMobile.className = mockChange >= 0 ? 'text-green-400 ml-2' : 'text-red-400 ml-2';
+                }
+                
+            } catch (error) {
+                console.error("Error fetching price data:", error);
+            }
+            
+            // Update every 30 seconds
+            setTimeout(updatePriceDisplay, 30000);
+        }
+
+        // Mobile Menu
+        function toggleMobileMenu() {
+            elements.mobileMenu.classList.toggle('hidden');
+        }
+
+        // ERC-20 ABI (simplified)
+        const ERC20_ABI = [
+            {
+                "constant": true,
+                "inputs": [{"name": "_owner", "type": "address"}],
+                "name": "balanceOf",
+                "outputs": [{"name": "balance", "type": "uint256"}],
+                "type": "function"
+            },
+            {
+                "constant": false,
+                "inputs": [
+                    {"name": "_spender", "type": "address"},
+                    {"name": "_value", "type": "uint256"}
+                ],
+                "name": "approve",
+                "outputs": [{"name": "", "type": "bool"}],
+                "type": "function"
+            },
+            {
+                "constant": false,
+                "inputs": [
+                    {"name": "_to", "type": "address"},
+                    {"name": "_value", "type": "uint256"}
+                ],
+                "name": "transfer",
+                "outputs": [{"name": "", "type": "bool"}],
+                "type": "function"
+            }
+        ];
+    </script>
+</body>
+</html>
